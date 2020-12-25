@@ -1,0 +1,1401 @@
+<!-- ========= SCRIPT ========= -->
+<script type="text/worker">
+
+on("sheet:opened", function(eventInfo){
+    
+    setAttrs({
+        rollquery: "?{Are you rolling with Hope or Despair?|Neither,2d6|Hope,3d6kh2[with Hope]|Despair,3d6kl2[with Despair]}",
+    });
+    
+});
+
+</script>
+<!-- ========= SHEET HEADER ========= -->
+<div>
+<div class="sheet-header sheet-topbar">
+    <input class="sheet-field-name" type="text" placeholder="Name" name="attr_character_name">
+	<input class="sheet-field-playbook" type="text" placeholder="Playbook" name="attr_playbook">
+</div>
+<div class="sheet-advancedoptions">
+    <div class="sheet-header">
+		<div class="sheet-section-name">Hide Advanced Options</div>
+		<input type="checkbox" class="sheet-hideAdvanced" name="attr_hideAdvanced" value="1">
+    </div>
+    <input type="checkbox" class="sheet-hideAdvanced" name="attr_hideAdvanced" value="1" style="display:none">
+    <div class="sheet-section-advancedoptions">
+        <div class="sheet-header">
+            <div class="sheet-section-name">Select Sheet Type (WIP)</div>
+            <input class="sheet-sheetType" name="attr_SheetType" type="text" value="fellowship" style="display:none">
+            <select class="sheet-sheetType" name="attr_SheetType" value="fellowship">
+                <option value="select" style="display:none" selected>Select your Sheet Type</option>
+                <option value="fellowship">Fellowship</option>
+                <option value="npc">NPC</option>
+                <option value="ship">Ship</option>
+                <option value="rebellion">Rebellion</option>
+                <option value="overlord">Overlord</option>
+                <option value="horizon">Horizon</option>
+                <option value="horizon">Location</option>
+                <option value="empire">Empire</option>
+              </select>
+        </div>
+        <input type="hidden" class="sheet-sheetType" name="attr_SheetType">
+        <div class="sheet-fellowship">
+            <div class="sheet-header">
+                <div class="sheet-section-name">Display Doom</div>
+                <input type="checkbox" class="sheet-hasDoom" name="attr_hasDoom" value="1">
+            </div>
+            <div class="sheet-header">
+                <div class="sheet-section-name">Display Iron</div>
+                <input type="checkbox" class="sheet-hasIron" name="attr_hasIron" value="1">
+            </div>
+            <div class="sheet-header">
+                <div class="sheet-section-name">Display Webs</div>
+                <input type="checkbox" class="sheet-hasWebs" name="attr_hasWebs" value="1">
+            </div>
+            <div class="sheet-header">
+                <div class="sheet-section-name">Display Ascended Stat (WIP)</div>
+                <input type="checkbox" class="sheet-hasAscended" name="attr_hasAscended" value="1">
+            </div>
+            <div class="sheet-header">
+                <div class="sheet-section-name">Display Pair (WIP)</div>
+                <input type="checkbox" class="sheet-hasPair" name="attr_hasPair" value="1">
+            </div>
+            <input type="checkbox" class="sheet-hasPair" name="attr_hasPair" value="1" style="display:none">
+            <div class="sheet-pair">
+                <div class="sheet-header">
+                    <div class="sheet-section-name">Display Pair's Doom (WIP)</div>
+                    <input type="checkbox" class="sheet-hasPairDoom" name="attr_hasPairDoom" value="1">
+                </div>
+                <div class="sheet-header">
+                    <div class="sheet-section-name">Display Pair's Iron (WIP)</div>
+                    <input type="checkbox" class="sheet-hasPairDoom" name="attr_hasPairIron" value="1">
+                </div>
+                <div class="sheet-header">
+                    <div class="sheet-section-name">Display Pair's Webs (WIP)</div>
+                    <input type="checkbox" class="sheet-hasPairDoom" name="attr_hasPairWebs" value="1">
+                </div>
+                
+                <div class="sheet-header">
+                    <div class="sheet-section-name">Display Trio (WIP)</div>
+                    <input type="checkbox" class="sheet-hasTrio" name="attr_hasTrio" value="1">
+                </div>
+                <input type="checkbox" class="sheet-hasTrio" name="attr_hasTrio" value="1" style="display:none">
+                <div class="sheet-trio">
+                    <div class="sheet-header">
+                        <div class="sheet-section-name">Display Trio's Doom (WIP)</div>
+                        <input type="checkbox" class="sheet-hasTrioDoom" name="attr_hasTrioDoom" value="1">
+                    </div>
+                    <div class="sheet-header">
+                        <div class="sheet-section-name">Display Trio's Iron (WIP)</div>
+                        <input type="checkbox" class="sheet-hasTrioIron" name="attr_hasTrioIron" value="1">
+                    </div>
+                    <div class="sheet-header">
+                        <div class="sheet-section-name">Display Trio's Webs (WIP)</div>
+                        <input type="checkbox" class="sheet-hasTrioWebs" name="attr_hasTrioWebs" value="1">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" class="sheet-sheetType" name="attr_SheetType">
+        <div class="sheet-overlord">
+            <div class="sheet-header">
+                <div class="sheet-section-name">Display Warmonger's Extra Army</div>
+                <input type="checkbox" class="sheet-hasWarmonger" name="attr_hasWarmonger" value="1">
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" class="sheet-sheetType" name="attr_SheetType">
+
+<!--    ====FELLOWSHIP SHEETS====   -->
+<div class="sheet-fellowship">
+    <div class="sheet-statistics">
+        <!-- <div class="sheet-header">
+            <div class="sheet-section-name">Damage</div>
+            <button type='roll' name='roll_RollDamage' value='/me rolls [[1@{dtype}]] damage.'></button>
+            <input type="text" name="attr_dtype">
+        </div> -->
+        <!-- <div class="sheet-header">
+            <div class="sheet-section-name">Armor</div>
+            <input type="number" name="attr_armor">
+        </div> -->
+        <div class="sheet-header">
+            <div class="sheet-section-name">Level</div>
+            <input type="number" name="attr_level">
+        </div>
+        <!-- <div class="sheet-header">
+            <div class="sheet-section-name">XP</div>
+            <input type="number" name="attr_xp_max" value="@{level}+7" disabled="true">
+            <span>/</span>	
+            <input type="number" name="attr_xp">
+        </div> -->
+        <!-- <div class="sheet-header">
+            <input type="checkbox" class="sheet-toggle sheet-left" title="show/hide" name="attr_hp-show" />
+
+            <div class="sheet-section-name sheet-show">HP</div>
+            <input class="sheet-show" type="number" name="attr_hp_max" value="@{basehp} + @{constitution}" disabled="true">
+            <span class="sheet-show">/</span>	
+            <input class="sheet-show" type="number" name="attr_hp">
+            
+            <div class="sheet-section-name sheet-hide">Base HP</div>
+            <input class="sheet-hide" type="number" name="attr_basehp" placeholder="Base">
+        </div> -->
+        <div class="sheet-clearfix"></div>
+    </div>
+
+    <div class="sheet-attributes">
+        <!-- BLOOD -->
+        <div class="sheet-header">
+            <label class="sheet-top" for="attr_blood">Blood</label>
+
+            <div class="sheet-row-1">
+                <input type="number" name="attr_blood">
+                <button type="roll" name="roll_TestBlood" class='sheet-d6-roll-button' value="?&{template:aw} {{name=@{character_name}}} {{roll_name={blood}}} {{roll_mod=@{blood}}} {{result=[[@{rollquery} + @{blood}]]}}">
+            </div>
+
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="damage_blood" value="1">
+                    <span> damaged</span>
+                </label>
+            </div>
+            
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="necrotic_blood" value="1">
+                    <span> necrotic</span>
+                </label>
+            </div>
+        </div>
+        
+        <!-- COURAGE -->
+        <div class="sheet-header">
+                <label class="sheet-top" for="attr_courage">Courage</label>
+
+            <div class="sheet-row-1">
+                <input type="number" name="attr_courage">
+                <button type="roll" name="roll_TestCourage" class='sheet-d6-roll-button' value="?&{template:aw} {{name=@{character_name}}} {{roll_name=^{courage}}} {{roll_mod=@{courage}}} {{result=[[@{rollquery} + @{courage}]]}}">
+            </div>
+
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="damage_courage" value="1">
+                    <span> damaged</span>
+                </label>
+            </div>
+            
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="necrotic_courage" value="1">
+                    <span> necrotic</span>
+                </label>
+            </div>
+        </div>
+        
+        <!-- GRACE -->
+        <div class="sheet-header">
+            <label class="sheet-top" for="attr_grace">Grace</label>
+
+            <div class="sheet-row-1">
+                <input type="number" name="attr_grace">
+                <button type="roll" name="roll_TestGrace" class='sheet-d6-roll-button' value="?&{template:aw} {{name=@{character_name}}} {{roll_name=^{grace}}} {{roll_mod=@{grace}}} {{result=[[@{rollquery} + @{grace}]]}}">
+            </div>
+
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="damage_grace" value="1">
+                    <span> damaged</span>
+                </label>
+            </div>
+            
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="necrotic_grace" value="1">
+                    <span> necrotic</span>
+                </label>
+            </div>
+            
+        </div>
+        
+        <!-- SENSE -->
+        <div class="sheet-header">
+            <label class="sheet-top" for="attr_sense">Sense</label>
+
+            <div class="sheet-row-1">
+                <input type="number" name="attr_sense">
+                <button type="roll" name="roll_TestSense" class='sheet-d6-roll-button' value="?&{template:aw} {{name=@{character_name}}} {{roll_name=^{sense}}} {{roll_mod=@{sense}}} {{result=[[@{rollquery} + @{sense}]]}}">
+            </div>
+
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="damage_sense" value="1">
+                    <span> damaged</span>
+                </label>
+            </div>
+            
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="necrotic_sense" value="1">
+                    <span> necrotic</span>
+                </label>
+            </div>
+        </div>
+        
+        <!-- WISDOM -->
+        <div class="sheet-header">
+            <label class="sheet-top" for="attr_wisdom">Wisdom</label>
+
+            <div class="sheet-row-1">
+                <input type="number" name="attr_wisdom">
+                <button type="roll" name="roll_TestWisdom" class='sheet-d6-roll-button' value="?&{template:aw} {{name=@{character_name}}} {{roll_name=^{wisdom}}} {{roll_mod=@{wisdom}}} {{result=[[@{rollquery} + @{wisdom}]]}}">
+            </div>
+
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="damage_wisdom" value="1">
+                    <span> damaged</span>
+                </label>
+            </div>
+            
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="necrotic_wisdom" value="1">
+                    <span> necrotic</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- DOOM -->
+
+        <input type="checkbox" class="sheet-hasDoom" name="attr_hasDoom" value="1" style="display:none">
+        <div class="sheet-header sheet-doom">
+            <label class="sheet-top" for="attr_doom">Doom</label>
+
+            <div class="sheet-row-1">
+                <input type="number" name="attr_doom">
+                <button type="roll" name="roll_TestDoom" class='sheet-d6-roll-button' value="?&{template:aw} {{name=@{character_name}}} {{roll_name=^{doom}}} {{roll_mod=@{doom}}} {{result=[[@{rollquery} + @{doom}]]}}">
+            </div>
+
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="damage_doom" value="1">
+                    <span> damaged</span>
+                </label>
+            </div>
+            
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="necrotic_doom" value="1">
+                    <span> necrotic</span>
+                </label>
+            </div>
+        </div>
+
+
+        <!-- IRON -->
+        <input type="checkbox" class="sheet-hasIron" name="attr_hasIron" value="1" style="display:none">
+        <div class="sheet-header sheet-iron">
+            <label class="sheet-top" for="attr_iron">Iron</label>
+
+            <div class="sheet-row-1">
+                <input type="number" name="attr_iron">
+                <button type="roll" name="roll_TestIron" class='sheet-d6-roll-button' value="?&{template:aw} {{name=@{character_name}}} {{roll_name=^{iron}}} {{roll_mod=@{iron}}} {{result=[[@{rollquery} + @{iron}]]}}">
+            </div>
+
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="damage_iron" value="1">
+                    <span> damaged</span>
+                </label>
+            </div>
+            
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="necrotic_iron" value="1">
+                    <span> necrotic</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- WEBS -->
+
+        <input type="checkbox" class="sheet-hasWebs" name="attr_hasWebs" value="1" style="display:none">
+        <div class="sheet-header sheet-webs">
+            <label class="sheet-top" for="attr_webs">Webs</label>
+
+            <div class="sheet-row-1">
+                <input type="number" name="attr_webs">
+            </div>
+        </div>
+
+        <div class="sheet-clearfix"></div>
+    </div>
+
+    <!-- PAIR -->
+    <input type="checkbox" class="sheet-hasPair" name="attr_hasPair" value="1" style="display:none">
+    <div class="sheet-attributes sheet-pair">
+        <!-- PAIR BLOOD -->
+        <div class="sheet-header">
+            <label class="sheet-top" for="attr_pairblood">Blood</label>
+
+            <div class="sheet-row-1">
+                <input type="number" name="attr_pairblood">
+                <button type="roll" name="roll_TestPairBlood" class='sheet-d6-roll-button' value="?&{template:aw} {{name=@{character_name}}} {{roll_name=^{pairblood}}} {{roll_mod=@{pairblood}}} {{result=[[@{rollquery} + @{pairblood}]]}}">
+            </div>
+
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="damage_pairblood" value="1">
+                    <span> damaged</span>
+                </label>
+            </div>
+            
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="necrotic_pairblood" value="1">
+                    <span> necrotic</span>
+                </label>
+            </div>
+        </div>
+        
+        <!-- PAIR COURAGE -->
+        <div class="sheet-header">
+                <label class="sheet-top" for="attr_paircourage">Courage</label>
+
+            <div class="sheet-row-1">
+                <input type="number" name="attr_paircourage">
+                <button type="roll" name="roll_TestPairCourage" class='sheet-d6-roll-button' value="?&{template:aw} {{name=@{character_name}}} {{roll_name=^{paircourage}}} {{roll_mod=@{paircourage}}} {{result=[[@{rollquery} + @{paircourage}]]}}">
+            </div>
+
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="damage_paircourage" value="1">
+                    <span> damaged</span>
+                </label>
+            </div>
+            
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="necrotic_paircourage" value="1">
+                    <span> necrotic</span>
+                </label>
+            </div>
+        </div>
+        
+        <!-- PAIR GRACE -->
+        <div class="sheet-header">
+            <label class="sheet-top" for="attr_pairgrace">Grace</label>
+
+            <div class="sheet-row-1">
+                <input type="number" name="attr_pairgrace">
+                <button type="roll" name="roll_TestPairGrace" class='sheet-d6-roll-button' value="?&{template:aw} {{name=@{character_name}}} {{roll_name=^{pairgrace}}} {{roll_mod=@{pairgrace}}} {{result=[[@{rollquery} + @{pairgrace}]]}}">
+            </div>
+
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="damage_pairgrace" value="1">
+                    <span> damaged</span>
+                </label>
+            </div>
+            
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="necrotic_pairgrace" value="1">
+                    <span> necrotic</span>
+                </label>
+            </div>
+            
+        </div>
+        
+        <!-- PAIR SENSE -->
+        <div class="sheet-header">
+            <label class="sheet-top" for="attr_pairsense">Sense</label>
+
+            <div class="sheet-row-1">
+                <input type="number" name="attr_pairsense">
+                <button type="roll" name="roll_TestPairSense" class='sheet-d6-roll-button' value="?&{template:aw} {{name=@{character_name}}} {{roll_name=^{pairsense}}} {{roll_mod=@{pairsense}}} {{result=[[@{rollquery} + @{pairsense}]]}}">
+            </div>
+
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="damage_pairsense" value="1">
+                    <span> damaged</span>
+                </label>
+            </div>
+            
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="necrotic_pairsense" value="1">
+                    <span> necrotic</span>
+                </label>
+            </div>
+        </div>
+        
+        <!-- PAIR WISDOM -->
+        <div class="sheet-header">
+            <label class="sheet-top" for="attr_pairwisdom">Wisdom</label>
+
+            <div class="sheet-row-1">
+                <input type="number" name="attr_pairwisdom">
+                <button type="roll" name="roll_TestPairWisdom" class='sheet-d6-roll-button' value="?&{template:aw} {{name=@{character_name}}} {{roll_name=^{pairwisdom}}} {{roll_mod=@{pairwisdom}}} {{result=[[@{rollquery} + @{pairwisdom}]]}}">
+            </div>
+
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="damage_pairwisdom" value="1">
+                    <span> damaged</span>
+                </label>
+            </div>
+            
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="necrotic_pairwisdom" value="1">
+                    <span> necrotic</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- PAIR DOOM -->
+
+        <input type="checkbox" class="sheet-hasPairDoom" name="attr_hasPairDoom" value="1" style="display:none">
+        <div class="sheet-header sheet-pair-doom">
+            <label class="sheet-top" for="attr_doom">Doom</label>
+
+            <div class="sheet-row-1">
+                <input type="number" name="attr_pairdoom">
+                <button type="roll" name="roll_TestPairDoom" class='sheet-d6-roll-button' value="?&{template:aw} {{name=@{character_name}}} {{roll_name=^{pairdoom}}} {{roll_mod=@{pairdoom}}} {{result=[[@{rollquery} + @{pairdoom}]]}}">
+            </div>
+
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="damage_pairdoom" value="1">
+                    <span> damaged</span>
+                </label>
+            </div>
+            
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="necrotic_pairdoom" value="1">
+                    <span> necrotic</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- PAIR IRON -->
+        <input type="checkbox" class="sheet-hasPairIron" name="attr_hasPairIron" value="1" style="display:none">
+        <div class="sheet-header sheet-pair-iron">
+            <label class="sheet-top" for="attr_pairiron">Iron</label>
+
+            <div class="sheet-row-1">
+                <input type="number" name="attr_pairiron">
+                <button type="roll" name="roll_TestPairIron" class='sheet-d6-roll-button' value="?&{template:aw} {{name=@{character_name}}} {{roll_name=^{pairiron}}} {{roll_mod=@{pairiron}}} {{result=[[@{rollquery} + @{pairiron}]]}}">
+            </div>
+
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="damage_pairiron" value="1">
+                    <span> damaged</span>
+                </label>
+            </div>
+            
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="necrotic_pairiron" value="1">
+                    <span> necrotic</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- PAIR WEBS -->
+        <input type="checkbox" class="sheet-hasPairWebs" name="attr_hasPairWebs" value="1" style="display:none">
+        <div class="sheet-header sheet-pair-webs">
+            <label class="sheet-top" for="attr_pairwebs">Webs</label>
+
+            <div class="sheet-row-1">
+                <input type="number" name="attr_pairwebs">
+            </div>
+        </div>
+
+        <div class="sheet-clearfix"></div>
+    </div>
+
+    <!-- TRIO -->
+    <input type="checkbox" class="sheet-hasTrio" name="attr_hasTrio" value="1" style="display:none">
+    <div class="sheet-attributes sheet-trio">
+        <!-- TRIO BLOOD -->
+        <div class="sheet-header">
+            <label class="sheet-top" for="attr_trioblood">Blood</label>
+
+            <div class="sheet-row-1">
+                <input type="number" name="attr_trioblood">
+                <button type="roll" name="roll_TestTrioBlood" class='sheet-d6-roll-button' value="?&{template:aw} {{name=@{character_name}}} {{roll_name=^{trioblood}}} {{roll_mod=@{trioblood}}} {{result=[[@{rollquery} + @{trioblood}]]}}">
+            </div>
+
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="damage_trioblood" value="1">
+                    <span> damaged</span>
+                </label>
+            </div>
+            
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="necrotic_trioblood" value="1">
+                    <span> necrotic</span>
+                </label>
+            </div>
+        </div>
+        
+        <!-- TRIO COURAGE -->
+        <div class="sheet-header">
+                <label class="sheet-top" for="attr_triocourage">Courage</label>
+
+            <div class="sheet-row-1">
+                <input type="number" name="attr_triocourage">
+                <button type="roll" name="roll_TestTrioCourage" class='sheet-d6-roll-button' value="?&{template:aw} {{name=@{character_name}}} {{roll_name=^{triocourage}}} {{roll_mod=@{triocourage}}} {{result=[[@{rollquery} + @{triocourage}]]}}">
+            </div>
+
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="damage_triocourage" value="1">
+                    <span> damaged</span>
+                </label>
+            </div>
+            
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="necrotic_triocourage" value="1">
+                    <span> necrotic</span>
+                </label>
+            </div>
+        </div>
+        
+        <!-- TRIO GRACE -->
+        <div class="sheet-header">
+            <label class="sheet-top" for="attr_triograce">Grace</label>
+
+            <div class="sheet-row-1">
+                <input type="number" name="attr_triograce">
+                <button type="roll" name="roll_TestTrioGrace" class='sheet-d6-roll-button' value="?&{template:aw} {{name=@{character_name}}} {{roll_name=^{triograce}}} {{roll_mod=@{triograce}}} {{result=[[@{rollquery} + @{triograce}]]}}">
+            </div>
+
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="damage_triograce" value="1">
+                    <span> damaged</span>
+                </label>
+            </div>
+            
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="necrotic_triograce" value="1">
+                    <span> necrotic</span>
+                </label>
+            </div>
+            
+        </div>
+        
+        <!-- TRIO SENSE -->
+        <div class="sheet-header">
+            <label class="sheet-top" for="attr_triosense">Sense</label>
+
+            <div class="sheet-row-1">
+                <input type="number" name="attr_triosense">
+                <button type="roll" name="roll_TestTrioSense" class='sheet-d6-roll-button' value="?&{template:aw} {{name=@{character_name}}} {{roll_name=^{triosense}}} {{roll_mod=@{triosense}}} {{result=[[@{rollquery} + @{triosense}]]}}">
+            </div>
+
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="damage_triosense" value="1">
+                    <span> damaged</span>
+                </label>
+            </div>
+            
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="necrotic_triosense" value="1">
+                    <span> necrotic</span>
+                </label>
+            </div>
+        </div>
+        
+        <!-- TRIO WISDOM -->
+        <div class="sheet-header">
+            <label class="sheet-top" for="attr_triowisdom">Wisdom</label>
+
+            <div class="sheet-row-1">
+                <input type="number" name="attr_triowisdom">
+                <button type="roll" name="roll_TestTrioWisdom" class='sheet-d6-roll-button' value="?&{template:aw} {{name=@{character_name}}} {{roll_name=^{triowisdom}}} {{roll_mod=@{triowisdom}}} {{result=[[@{rollquery} + @{triowisdom}]]}}">
+            </div>
+
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="damage_triowisdom" value="1">
+                    <span> damaged</span>
+                </label>
+            </div>
+            
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="necrotic_triowisdom" value="1">
+                    <span> necrotic</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- DOOM -->
+
+        <input type="checkbox" class="sheet-hasTrioDoom" name="attr_hasTrioDoom" value="1" style="display:none">
+        <div class="sheet-header sheet-trio-doom">
+            <label class="sheet-top" for="attr_triodoom">Doom</label>
+
+            <div class="sheet-row-1">
+                <input type="number" name="attr_triodoom">
+                <button type="roll" name="roll_TestTrioDoom" class='sheet-d6-roll-button' value="?&{template:aw} {{name=@{character_name}}} {{roll_name=^{triodoom}}} {{roll_mod=@{triodoom}}} {{result=[[@{rollquery} + @{triodoom}]]}}">
+            </div>
+
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="damage_triodoom" value="1">
+                    <span> damaged</span>
+                </label>
+            </div>
+            
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="necrotic_triodoom" value="1">
+                    <span> necrotic</span>
+                </label>
+            </div>
+        </div>
+
+
+        <!-- IRON -->
+        <input type="checkbox" class="sheet-hasTrioIron" name="attr_hasTrioIron" value="1" style="display:none">
+        <div class="sheet-header sheet-trio-iron">
+            <label class="sheet-top" for="attr_trioiron">Iron</label>
+
+            <div class="sheet-row-1">
+                <input type="number" name="attr_trioiron">
+                <button type="roll" name="roll_TestTrioIron" class='sheet-d6-roll-button' value="?&{template:aw} {{name=@{character_name}}} {{roll_name=^{trioiron}}} {{roll_mod=@{trioiron}}} {{result=[[@{rollquery} + @{trioiron}]]}}">
+            </div>
+
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="damage_trioiron" value="1">
+                    <span> damaged</span>
+                </label>
+            </div>
+            
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="necrotic_trioiron" value="1">
+                    <span> necrotic</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- WEBS -->
+
+        <input type="checkbox" class="sheet-hasTrioWebs" name="attr_hasTrioWebs" value="1" style="display:none">
+        <div class="sheet-header sheet-trio-webs">
+            <label class="sheet-top" for="attr_triowebs">Webs</label>
+
+            <div class="sheet-row-1">
+                <input type="number" name="attr_triowebs">
+            </div>
+        </div>
+
+        <div class="sheet-clearfix"></div>
+    </div>
+
+    <div class="sheet-col-left">
+        <!-- ===== Formerly ALIGNMENT, now AGENDAS ===== -->
+        <div class="sheet-header">
+            <div class="sheet-section-name">Agendas</div>
+        </div>
+        <div class="sheet-section-agendas">
+            <input type="text" name="attr_agenda1" placeholder="Be Brave, Take Risks">
+            <br>
+            <input type="text" name="attr_agenda2" placeholder="Tell Us Of Your People">
+            <br>
+            <input type="text" name="attr_agenda3" placeholder="Improve The World Around You">
+            <br>
+            <textarea name="attr_additionalagendas" placeholder="Additional Agendas"></textarea>
+        </div>
+
+        <!-- ===== LOOK ===== -->
+        <div class="sheet-header">
+            <div class="sheet-section-name">Look</div>
+            <input type="checkbox" class="sheet-hideLook" name="attr_hideLook" value="1">
+        </div>
+        <input type="checkbox" class="sheet-hideLook" name="attr_hideLook" value="1" style="display:none">
+        <div class="sheet-section-look">
+            <input type="text" name="attr_look1" placeholder="Your Eyes">
+            <br>
+            <input type="text" name="attr_look2" placeholder="Your Body">
+            <br>
+            <input type="text" name="attr_look3" placeholder="Your Clothes">
+            <br>
+            <input type="text" name="attr_look4" placeholder="Something Special About You">
+        </div>
+
+        <!-- ===== Formerly RACE, now Your People ===== -->
+        <div class="sheet-header">
+            <div class="sheet-section-name">Your People</div>
+            <input type="checkbox" class="sheet-hidePeople" name="attr_hidePeople" value="1">
+        </div>
+        <input type="checkbox" class="sheet-hidePeople" name="attr_hidePeople" value="1" style="display:none">
+        <div class="sheet-section-people">
+            <button type="roll" name="roll_people-chat" class='sheet-people-chat-button' value="&{template:sharemove} {{movename=@{people_name} }} {{movebody=@{people_bonus} }}"></button>
+            <input type="text" name="attr_people_name" placeholder="What are Your People?">
+            <br>
+            <textarea name="attr_people_bonus" placeholder="Move"></textarea>
+        </div> 
+
+        <!-- ===== BONDS ===== -->
+        <div class="sheet-header">
+            <div class="sheet-section-name">Bonds</div>
+            <input type="checkbox" class="sheet-hideBonds" name="attr_hideBonds" value="1">
+        </div>
+        <input type="checkbox" class="sheet-hideBonds" name="attr_hideBonds" value="1" style="display:none">
+        <div class="sheet-section-bonds">
+            <fieldset class="repeating_bonds">
+                <textarea placeholder="Empty Bond" name="attr_bond"></textarea>
+                <div class="sheet-clearfix"></div>
+            </fieldset>
+        </div>
+
+        <div class="sheet-clearfix"></div>
+
+        <!-- ===== COMPANIONS ===== -->
+        <div class="sheet-header">
+            <div class="sheet-section-name">Companions</div>
+            <input type="checkbox" class="sheet-hideCompanions" name="attr_hideCompanions" value="1">
+        </div>
+        <input type="checkbox" class="sheet-hideCompanions" name="attr_hideCompanions" value="1" style="display:none">
+        <div class="sheet-section-companions sheet-fellowship">
+            <fieldset class="repeating_companions">
+                <div class="sheet-section-companionbox">
+                    <input name="attr_companionname" type="text" placeholder="Name">
+                        <fieldset class="repeating_companion-stats">
+                            <input type="checkbox" class="sheet-toggle"  name="attr_companion-stat-used" value="1" />
+                            <input name="attr_companionstat" type="text" placeholder="Stat">
+                            <div class="sheet-clearfix"></div>
+                        </fieldset>
+                    <div class="sheet-clearfix"></div>
+                </div>
+            </fieldset>
+        </div>
+
+        <div class="sheet-clearfix"></div>
+
+        <!-- ===== GEAR ===== -->
+        <div class="sheet-header">
+            <div class="sheet-section-name">Gear</div>
+            <input type="checkbox" class="sheet-hideGear" name="attr_hideGear" value="1">
+            <!--
+            <input type="checkbox" class="sheet-toggle" title="show/hide" name="attr_load-show" value="1">
+
+            <input class="sheet-show" type="number" name="attr_load_max" value="@{baseload} + @{strmod}" disabled="true">
+            <span class="sheet-show">/</span>
+            <input class="sheet-show" type="number" name="attr_load">
+            <span class="sheet-show sheet-section-name sheet-right">Load</span>
+
+            <input class="sheet-hide" type="number" name="attr_baseload">
+            <span class="sheet-hide sheet-section-name sheet-right">Base Load</span> -->
+        </div>
+        <input type="checkbox" class="sheet-hideGear" name="attr_hideGear" value="1" style="display:none">
+        <div class="sheet-section-gear">
+            <fieldset class="repeating_items">
+                <div class="sheet-section-gearbox">
+                    <input name="attr_itemname" type="text" placeholder="Name">
+                    <input name="attr_itemtags" type="text" placeholder="Tags">
+                    <input name="attr_itemusesremaining" type="number" placeholder="0" title="Uses Available">
+                    <span>/</span>
+                    <input name="attr_itemusesmax" type="number" placeholder="0" title="Max Uses">
+                    <div class="sheet-clearfix"></div>
+                </div>
+            </fieldset>
+        </div>
+        
+        <div class="sheet-clearfix"></div>
+
+        <div class="sheet-header">
+            <div class="sheet-section-name">Other Gear</div>
+            <input type="checkbox" class="sheet-hideOtherGear" name="attr_hideOtherGear" value="1">
+        </div>
+        <input type="checkbox" class="sheet-hideOtherGear" name="attr_hideOtherGear" value="1" style="display:none">
+        <div class="sheet-section-othergear">
+            <fieldset class="repeating_otheritems">
+                <div class="sheet-section-othergearbox">
+                    <input name="attr_otheritemname" type="text" placeholder="Name">
+                    <input name="attr_otheritemtags" type="text" placeholder="Tags">
+                    <input name="attr_otheritemusesremaining" type="number" placeholder="0" title="Uses Available">
+                    <span>/</span>
+                    <input name="attr_otheritemusesmax" type="number" placeholder="0" title="Max Uses">
+                    <div class="sheet-clearfix"></div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+
+    <div class="sheet-col-right">
+        <!-- ===== MOVES ===== -->
+        <div class="sheet-header">
+            <div class="sheet-section-name">Moves</div>
+        </div>
+        <div class="sheet-section-moves">
+            <fieldset class="repeating_moves">
+                <div class="sheet-section-movebox">
+                    <button type="roll" name="roll_move-chat" class='sheet-move-chat-button' value="&{template:sharemove} {{movename=@{movename} }} {{movebody=@{movebody} }}"></button>
+                    <input type="text" name="attr_movename" placeholder="Move Name">
+                    <input type="checkbox" class="sheet-toggle" title="show/hide" name="attr_move-show" value="1" />
+                    <div class="sheet-hide sheet-auto-expand">
+                        <span name="attr_movebody"></span>
+                        <textarea name="attr_movebody" placeholder="Move Description"></textarea>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+
+    <div class="sheet-clearfix"></div>
+    <br>
+
+    <!-- ===== SPELLS ===== -->
+    <div class="sheet-header">
+        <div class="sheet-section-name">Spells</div>
+        <input type="checkbox" class="sheet-hideSpells" name="attr_hideSpells" value="1">
+    </div>
+    <input type="checkbox" class="sheet-hideSpells" name="attr_hideSpells" value="1" style="display:none">
+    <div class="sheet-section-spells sheet-fellowship">
+        <fieldset class="repeating_spells sheet-section-spells">
+            <input type="checkbox" class="sheet-toggle"  name="attr_spell-used" value="1" />
+            <input type="text" name="attr_spellname" placeholder="Spell Name">
+            <!--<textarea name="attr_spellbody" class="sheet-hide" placeholder="Spell Description"></textarea>-->
+        </fieldset>
+    </div>
+</div>
+
+<!--    ====THE OVERLORD SHEET====  -->
+<div class="sheet-overlord">
+    <div class="sheet-statistics">
+        <div class="sheet-header">
+            <div class="sheet-section-name">Level</div>
+            <input type="number" name="attr_level">
+        </div>
+        <div class="sheet-clearfix"></div>
+    </div>
+    <div class="sheet-attributes">
+        <div class="sheet-header">
+            <div class="sheet-row-1">
+                <input type="text" name="attr_overlordstat1">
+            </div>
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="damage_overlordstat1" value="1">
+                    <span> damaged</span>
+                </label>
+            </div>
+        </div>
+    
+        <div class="sheet-header">
+            <div class="sheet-row-1">
+                <input type="text" name="attr_overlordstat2">
+            </div>
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="damage_overlordstat2" value="1">
+                    <span> damaged</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="sheet-header">
+            <div class="sheet-row-1">
+                <input type="text" name="attr_overlordstat3">
+            </div>
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="damage_overlordstat3" value="1">
+                    <span> damaged</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="sheet-header">
+            <div class="sheet-row-1">
+                <input type="text" name="attr_overlordstat4">
+            </div>
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="damage_overlordstat4" value="1">
+                    <span> damaged</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="sheet-header">
+            <div class="sheet-row-1">
+                <input type="text" name="attr_overlordstat5">
+            </div>
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="damage_overlordstat5" value="1">
+                    <span> damaged</span>
+                </label>
+            </div>
+        </div>
+    </div>
+    
+    <div class="sheet-col-left">
+        <!-- ===== Formerly ALIGNMENT, now AGENDAS ===== -->
+        <div class="sheet-header">
+            <div class="sheet-section-name">Agendas</div>
+        </div>
+        <div class="sheet-section-agendas">
+            <input type="text" name="attr_agenda1" placeholder="Create Opportunities To Do Good">
+            <br>
+            <input type="text" name="attr_agenda2" placeholder="Play To Find Out What Happens">
+            <br>
+            <textarea name="attr_additionalagendas" placeholder="Your Motivation"></textarea>
+            <br>
+            <textarea name="attr_additionalagenda-cut" placeholder="What extra Cut does your Motivation give you?"></textarea>
+        </div>
+        
+        <!-- ===== LOOK ===== -->
+        <div class="sheet-header">
+            <div class="sheet-section-name">Look</div>
+            <input type="checkbox" class="sheet-hideLook" name="attr_hideLook" value="1">
+        </div>
+        <input type="checkbox" class="sheet-hideLook" name="attr_hideLook" value="1" style="display:none">
+        <div class="sheet-section-look">
+            <input type="text" name="attr_look1" placeholder="Your Villainous Eyes">
+            <br>
+            <input type="text" name="attr_look2" placeholder="Your Magnificent Raiment">
+            <br>
+            <input type="text" name="attr_look3" placeholder="Your Singular Body">
+            <br>
+            <input type="text" name="attr_look4" placeholder="How You Chew the Scenery">
+        </div>
+
+        <!-- ===== YOUR ARMY ===== -->
+        <div class="sheet-header">
+            <div class="sheet-section-name">Your Army</div>
+            <input type="checkbox" class="sheet-hideArmy" name="attr_hideArmy" value="1">
+        </div>
+        <input type="checkbox" class="sheet-hideArmy" name="attr_hideArmy" value="1" style="display:none">
+        <div class="sheet-section-army">
+            <input type="text" name="attr_army_name" placeholder="Who or what serves you?">
+            <br>
+            <textarea name="attr_army-desc" placeholder="Describe them"></textarea>
+            <br>
+            <input type="checkbox" class="sheet-hasWarmonger" name="attr_hasWarmonger" value="1" style="display:none">
+            <div class="sheet-warmonger">
+                <br>
+                <input type="text" name="attr_army_name2" placeholder="Warmongers have two armies">
+                <br>
+                <textarea name="attr_army-desc2" placeholder="If you have the Warmonger advancement, describe your second army"></textarea>
+            </div>
+        </div> 
+
+         <!-- ===== BONDS ===== -->
+         <div class="sheet-header">
+            <div class="sheet-section-name">Bonds</div>
+            <input type="checkbox" class="sheet-hideBonds" name="attr_hideBonds" value="1">
+        </div>
+        <input type="checkbox" class="sheet-hideBonds" name="attr_hideBonds" value="1" style="display:none">
+        <div class="sheet-section-bonds">
+            <fieldset class="repeating_bonds">
+                <textarea placeholder="Empty Bond" name="attr_bond"></textarea>
+                <div class="sheet-clearfix"></div>
+            </fieldset>
+        </div>
+
+        <div class="sheet-clearfix"></div>
+
+        <!---   YOUR WEAKNESS   -->
+        <div class="sheet-header">
+            <div class="sheet-section-name">Your Weakness</div>
+            <input type="checkbox" class="sheet-hideLook" name="attr_hideWeakness" value="1">
+        </div>
+        <input type="checkbox" class="sheet-hideWeakness" name="attr_hideWeakness" value="1" style="display:none">
+        <div class="sheet-section-weakness">
+            <input type="text" name="attr_weakness-name" placeholder="What is Your Weakness?">
+            <br>
+            <textarea name="attr_weakness-desc" placeholder="What are some details about it?"></textarea>
+        </div>
+
+        
+        <!-- ===== GEAR ===== -->
+        <div class="sheet-header">
+            <div class="sheet-section-name">Gear</div>
+            <input type="checkbox" class="sheet-hideGear" name="attr_hideGear" value="1">
+            <!--
+            <input type="checkbox" class="sheet-toggle" title="show/hide" name="attr_load-show" value="1">
+
+            <input class="sheet-show" type="number" name="attr_load_max" value="@{baseload} + @{strmod}" disabled="true">
+            <span class="sheet-show">/</span>
+            <input class="sheet-show" type="number" name="attr_load">
+            <span class="sheet-show sheet-section-name sheet-right">Load</span>
+
+            <input class="sheet-hide" type="number" name="attr_baseload">
+            <span class="sheet-hide sheet-section-name sheet-right">Base Load</span> -->
+        </div>
+        <input type="checkbox" class="sheet-hideGear" name="attr_hideGear" value="1" style="display:none">
+        <div class="sheet-section-gear">
+            <fieldset class="repeating_items">
+                <div class="sheet-section-gearbox">
+                    <input name="attr_itemname" type="text" placeholder="Name">
+                    <input name="attr_itemtags" type="text" placeholder="Tags">
+                    <input name="attr_itemusesremaining" type="number" placeholder="0" title="Uses Available">
+                    <span>/</span>
+                    <input name="attr_itemusesmax" type="number" placeholder="0" title="Max Uses">
+                    <div class="sheet-clearfix"></div>
+                </div>
+            </fieldset>
+        </div>
+        
+        <div class="sheet-clearfix"></div>
+    </div>
+    
+    <div class="sheet-col-right">
+        <!-- ===== PLANS ===== -->
+        <div class="sheet-header">
+            <div class="sheet-section-name">Your Plans</div>
+        </div>
+        <div class="sheet-section-plans">
+            <fieldset class="repeating_plans">
+                <div class="sheet-section-plansbox">
+                    <input type="text" name="attr_planname" placeholder="Master Plan Name">
+                    <input type="checkbox" class="sheet-toggle" title="show/hide" name="attr_plan-show" value="1" />
+                    <div class="sheet-hide sheet-auto-expand">
+                        <span name="attr_planbody"></span>
+                        <textarea name="attr_planbody" placeholder="Plan Description"></textarea>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+      <!-- ===== GENERALS ===== -->
+
+        <div class="sheet-header">
+            <div class="sheet-section-name">Your Generals</div>
+        </div>
+        <div class="sheet-section-generals">
+            <fieldset class="repeating_generals">
+                <div class="sheet-section-generalsbox">
+                    <input type="text" name="attr_generalsname" placeholder="Your General's Name">
+                    <input type="checkbox" class="sheet-toggle" title="show/hide" name="attr_general-show" value="1" />
+                    <div class="sheet-hide sheet-auto-expand">
+                        <span name="attr_generalbody"></span>
+                        <textarea name="attr_generalbody" placeholder="Information about this general"></textarea>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+
+    <div class="sheet-clearfix"></div>
+    <br>
+</div>
+
+<!--    ====THE SHIP SHEET====   -->
+<div class="sheet-ship">
+    <div class="sheet-statistics">
+        <div class="sheet-header">
+            <div class="sheet-section-name">Level</div>
+            <input type="number" name="attr_level">
+        </div>
+        <div class="sheet-clearfix"></div>
+    </div>
+
+    <div class="sheet-attributes">
+        <!-- CANNON -->
+        <div class="sheet-header">
+            <label class="sheet-top" for="attr_cannon">Cannon</label>
+
+            <div class="sheet-row-1">
+                <input type="number" name="attr_cannon">
+                <button type="roll" name="roll_TestCannon" class='sheet-d6-roll-button' value="?&{template:aw} {{name=@{character_name}}} {{roll_name={cannon}}} {{roll_mod=@{cannon}}} {{result=[[@{rollquery} + @{cannon}]]}}">
+            </div>
+
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="damage_cannon" value="1">
+                    <span> damaged</span>
+                </label>
+            </div>
+
+            <div class="sheet-row-2">
+                <label>
+                    <span></span>
+                </label>
+            </div>
+        </div>
+
+         <!-- ENGINE -->
+         <div class="sheet-header">
+            <label class="sheet-top" for="attr_engine">Engine</label>
+
+            <div class="sheet-row-1">
+                <input type="number" name="attr_Engine">
+                <button type="roll" name="roll_TestEngine" class='sheet-d6-roll-button' value="?&{template:aw} {{name=@{character_name}}} {{roll_name={engine}}} {{roll_mod=@{engine}}} {{result=[[@{rollquery} + @{engine}]]}}">
+            </div>
+
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="damage_engine" value="1">
+                    <span> damaged</span>
+                </label>
+            </div>
+
+            <div class="sheet-row-2">
+                <label>
+                    <span></span>
+                </label>
+            </div>
+        </div>
+        
+        <!-- HULL -->
+        <div class="sheet-header">
+            <label class="sheet-top" for="attr_hull">Hull</label>
+
+            <div class="sheet-row-1">
+                <input type="number" name="attr_Hull">
+                <button type="roll" name="roll_TestHull" class='sheet-d6-roll-button' value="?&{template:aw} {{name=@{character_name}}} {{roll_name={hull}}} {{roll_mod=@{hull}}} {{result=[[@{rollquery} + @{hull}]]}}">
+            </div>
+
+            <div class="sheet-row-2">
+                <label>
+                    <input type="checkbox" name="damage_hull" value="1">
+                    <span> damaged</span>
+                </label>
+            </div>
+
+            <div class="sheet-row-2">
+                <label>
+                    <span></span>
+                </label>
+            </div>
+        </div>
+
+        <!-- CREW -->
+        <div class="sheet-header">
+            <label class="sheet-top" for="attr_hull">Crew</label>
+
+            <div class="sheet-row-1">
+                <div class="sheet-fluidnumber-box">
+                    <input type="fluidnumber" name="attr_crew_max">
+                    <span class="sheet-slash">/</span>	
+                    <input type="fluidnumber" name="attr_crew_current" placeholder="MAX">
+                </div>
+            </div>
+            
+        </div>
+
+        <!-- AMMO -->
+        <div class="sheet-header">
+            <label class="sheet-top" for="attr_ammo">Ammo</label>
+
+            <div class="sheet-row-1">
+                <div class="sheet-fluidnumber-box">
+                    <input type="fluidnumber" name="attr_ammo_max">
+                    <span class="sheet-slash">/</span>	
+                    <input type="fluidnumber" name="attr_ammo_current" placeholder="MAX">
+                </div> 
+            </div>
+        </div>
+
+        <div class="sheet-clearfix"></div>
+    </div>
+    
+    <div class="sheet-col-left">
+        <!-- ===== CREW ===== -->
+        <div class="sheet-header">
+            <div class="sheet-section-name">Crew</div>
+            <input type="checkbox" class="sheet-hidCrew" name="attr_hideCrew" value="1">
+        </div>
+        <input type="checkbox" class="sheet-hideCrew" name="attr_hideCrew" value="1" style="display:none">
+        <div class="sheet-section-crew">
+            <span>Captain: </span>
+            <input type="text" name="attr_captain" placeholder="Without a Captain, no other Roles can be filled.">
+            <br>
+            <span>Pilot: </span>
+            <input type="text" name="attr_pilot" placeholder="Without a Pilot, the ship can't move.">
+            <br>
+            <span>Gunner: </span>
+            <input type="text" name="attr_gunner" placeholder="Without a Gunner, the ship can't attack.">
+            <br>
+            <span>Engineer: </span>
+            <input type="text" name="attr_engineer" placeholder="Without an Engineer, the ship can't heal.">
+            <br>
+            <span>Officer: </span>
+            <input type="text" name="attr_officer" placeholder="Without an Officer, you can't spend Crew.">
+            <br>
+            <span>Navigator: </span>
+            <input type="text" name="attr_navigator" placeholder="Without a Navigator, the ship can get lost.">
+            <br>
+            <span>Muscle: </span>
+            <input type="text" name="attr_muscle" placeholder="With a Muscle, the ship's interior is secure.">
+            <br>
+            <span>Doctor: </span>
+            <input type="text" name="attr_doctor" placeholder="With a Doctor, you regain Crew while traveling">
+            <br>
+            <span>Quartermaster: </span>
+            <input type="text" name="attr_quartermaster" placeholder="With a QM, you gain Crew to restock.">
+            <br>
+            <span>Cook: </span>
+            <input type="text" name="attr_cook" placeholder="With a Cook, your max Crew is increased.">
+            <br>
+        </div>
+
+        <!-- ===== LOOK ===== -->
+        <div class="sheet-header">
+            <div class="sheet-section-name">Look</div>
+            <input type="checkbox" class="sheet-hideLook" name="attr_hideLook" value="1">
+        </div>
+        <input type="checkbox" class="sheet-hideLook" name="attr_hideLook" value="1" style="display:none">
+        <div class="sheet-section-look">
+            <input type="text" name="attr_look1" placeholder="Maintenance">
+            <br>
+            <input type="text" name="attr_look2" placeholder="Aesthetic Style">
+            <br>
+            <input type="text" name="attr_look3" placeholder="Complexity">
+            <br>
+            <input type="text" name="attr_look4" placeholder="Propulsion">
+        </div>
+
+        <!-- ===== WHAT IS THE SHIP ===== -->
+        <div class="sheet-header">
+            <div class="sheet-section-name">Your Ship</div>
+            <input type="checkbox" class="sheet-hideYourShip" name="attr_hideYourShip" value="1">
+        </div>
+        <input type="checkbox" class="sheet-hideYourShip" name="attr_hideYourShip" value="1" style="display:none">
+        <div class="sheet-section-yourship">
+            <fieldset class="repeating_bonds">
+                <button type="roll" name="roll_yourship-chat" class='sheet-yourship-chat-button' value="&{template:sharemove} {{movename=@{yourship_type} }} {{movebody=@{yourship_bonus} }}"></button>
+                <input type="text" name="attr_yourship_type" placeholder="What Describes Your Ship?">
+                <br>
+                <textarea name="attr_yourship_bonus" placeholder="Move"></textarea>
+                <div class="sheet-clearfix"></div>
+            </fieldset>
+        </div> 
+        <div class="sheet-clearfix"></div>
+
+        <!-- ===== GEAR ===== -->
+        <div class="sheet-header">
+            <div class="sheet-section-name">Gear</div>
+            <input type="checkbox" class="sheet-hideGear" name="attr_hideGear" value="1">
+            <!--
+            <input type="checkbox" class="sheet-toggle" title="show/hide" name="attr_load-show" value="1">
+
+            <input class="sheet-show" type="number" name="attr_load_max" value="@{baseload} + @{strmod}" disabled="true">
+            <span class="sheet-show">/</span>
+            <input class="sheet-show" type="number" name="attr_load">
+            <span class="sheet-show sheet-section-name sheet-right">Load</span>
+
+            <input class="sheet-hide" type="number" name="attr_baseload">
+            <span class="sheet-hide sheet-section-name sheet-right">Base Load</span> -->
+        </div>
+        <input type="checkbox" class="sheet-hideGear" name="attr_hideGear" value="1" style="display:none">
+        <div class="sheet-section-gear">
+            <fieldset class="repeating_items">
+                <div class="sheet-section-gearbox">
+                    <input name="attr_itemname" type="text" placeholder="Name">
+                    <input name="attr_itemtags" type="text" placeholder="Tags">
+                    <input name="attr_itemusesremaining" type="number" placeholder="0" title="Uses Available">
+                    <span>/</span>
+                    <input name="attr_itemusesmax" type="number" placeholder="0" title="Max Uses">
+                    <div class="sheet-clearfix"></div>
+                </div>
+            </fieldset>
+        </div>
+        
+        <div class="sheet-clearfix"></div>
+    </div>
+
+    <div class="sheet-col-right">
+        <!-- ===== MOVES ===== -->
+        <div class="sheet-header">
+            <div class="sheet-section-name">Moves</div>
+        </div>
+        <div class="sheet-section-moves">
+            <fieldset class="repeating_moves">
+                <div class="sheet-section-movebox">
+                    <button type="roll" name="roll_move-chat" class='sheet-move-chat-button' value="&{template:sharemove} {{movename=@{movename} }} {{movebody=@{movebody} }}"></button>
+                    <input type="text" name="attr_movename" placeholder="Move Name">
+                    <input type="checkbox" class="sheet-toggle" title="show/hide" name="attr_move-show" value="1" />
+                    <div class="sheet-hide sheet-auto-expand">
+                        <span name="attr_movebody"></span>
+                        <textarea name="attr_movebody" placeholder="Move Description"></textarea>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+
+    <div class="sheet-clearfix"></div>
+    <br>
+</div>
+
+<!-- ===ADVANCEMENT CHOICES=== -->
+<div class="sheet-header">
+    <div class="sheet-section-name">Advancement Decisions</div>
+    <input type="checkbox" class="sheet-hideAdvancement" name="attr_hideAdvancement" value="1">
+</div>
+<input type="checkbox" class="sheet-hideAdvancement" name="attr_hideAdvancement" value="1" style="display:none">
+<div class="sheet-section-advancement">
+	<fieldset class="repeating_advancement sheet-section-advancement">
+        <input type="checkbox" class="sheet-toggle" title="show/hide" name="attr_advancement-show" value="1" />
+        <input type="text" name="attr_advancement" placeholder="Advancement Name">
+	</fieldset>
+</div>
+
+<!-- ===PLAYER NOTES=== -->
+<div class="sheet-header">
+    <div class="sheet-section-name">Your Notes</div>
+    <input type="checkbox" class="sheet-hideNotes" name="attr_hideNotes" value="1">
+</div>
+<input type="checkbox" class="sheet-hideNotes" name="attr_hideNotes" value="1" style="display:none">
+<div class="sheet-section-notes">
+	<fieldset class="repeating_notes sheet-section-notes">
+        <input type="text" name="attr_note-title" placeholder="Notes">
+        <input type="checkbox" class="sheet-toggle" title="show/hide" name="attr_note-show" value="1" />
+        <textarea name="attr_note-body" class="sheet-hide" placeholder="Write about your People, the People you've met, the places you've been, and the things you've found.
+        If you think it's important to you or to your People, write it down."></textarea>
+	</fieldset>
+</div>
+
+<!-- ========= ROLL TEMPLATE(S) ========= -->
+    <!--    AuthorX's AW template   -->
+<rolltemplate class="sheet-rolltemplate-aw">
+    <table>
+        <tr><th colspan="2">{{name}}<br/>rolls {{roll_name}} ({{roll_mod}})</th></tr>
+        <tr>
+            {{#rollGreater() result 9}}
+                <td class="result success">{{result}}</td>
+                <td><span>Succeeds</span></td>
+            {{/rollGreater() result 9}}
+            {{#rollBetween() result 7 9}}
+                <td class="result">{{result}}</td>
+                <td><span>Succeeds partially</span></td>
+            {{/rollBetween() result 7 9}}
+            {{#rollLess() result 7}}
+                <td class="result failure">{{result}}</td>
+                <td><span>Misses</span></td>
+            {{/rollLess() result 7}}
+        </tr>
+    </table>
+</rolltemplate>
+
+    <!--    Modified 5e Template    -->
+<rolltemplate class="sheet-rolltemplate-sharemove">
+    <div class="container">
+        <div><h1>{{movename}}</h1></div>
+        <div><span class="subheader">{{playername}}</span></div>
+        <div class="underline-container"><div class="underline"></div></div>
+        <span>{{movebody}}</span>
+    </div>
+</rolltemplate>
